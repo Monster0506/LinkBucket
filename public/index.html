@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,26 +8,85 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
     <style>
-      .sticky-header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background-color: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      /* Hover shadow effect */
+      .hover-shadow {
+        transition:
+          transform 0.4s ease,
+          box-shadow 0.4s ease,
+          background-color 0.4s ease;
       }
-      .content {
-        max-height: 75vh;
+
+      .hover-shadow:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
+        background-color: rgba(245, 245, 245, 0.9);
+      }
+
+      /* Full height for desktop layout */
+      .main-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 40px;
+        height: 100vh;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* Styling for the form */
+      .form-container {
+        width: 30%;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 20px; /* Keep form always in view */
+      }
+
+      /* Styling for the link list */
+      .link-list-container {
+        width: 65%;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-height: 100%;
         overflow-y: auto;
+      }
+
+      /* Responsive design for smaller devices */
+      @media (max-width: 768px) {
+        .main-container {
+          flex-direction: column;
+          padding: 20px;
+          height: auto;
+        }
+
+        .form-container,
+        .link-list-container {
+          width: 100%;
+          margin-bottom: 20px;
+        }
+
+        .form-container {
+          position: relative;
+          top: 0;
+        }
       }
     </style>
   </head>
-  <body
-    class="bg-light d-flex justify-content-center align-items-center vh-100"
-  >
-    <div class="bg-white p-4 rounded shadow w-100 max-w-md">
-      <!-- Sticky Header -->
-      <div class="sticky-header p-3 mb-3">
+
+  <body class="bg-light">
+    <!-- Main container with two-column layout for desktop -->
+    <div class="main-container">
+      <!-- Form Section -->
+      <div class="form-container">
         <h1 class="h4 fw-bold mb-3">Link Bucket</h1>
         <form id="linkForm">
           <div class="mb-3">
@@ -53,14 +111,12 @@
           <button type="submit" class="btn btn-primary w-100">Add Link</button>
         </form>
       </div>
-    </div>
 
-    <!-- Link List -->
-    <div class="bg-white p-4 rounded shadow w-100 max-w-md">
-      <div class="content">
+      <!-- Link List Section -->
+      <div class="link-list-container">
         <ul
           id="linkList"
-          class="row row-cols-1 row-cols-md-2 g-2 list-unstyled"
+          class="row row-cols-1 row-cols-md-2 g-3 list-unstyled"
         ></ul>
       </div>
     </div>

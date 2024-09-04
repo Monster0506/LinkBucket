@@ -56,35 +56,41 @@ window.addEventListener("DOMContentLoaded", () => {
     })
     .catch((error) => console.error("Error:", error));
 });
+
 function addLinkToList(link) {
   const url = link.url;
-  const id = link.id;
   const title = link.title;
-  const listItem = document.createElement("li");
-  listItem.className =
-    "col d-flex flex-column justify-content-between p-3 bg-light border rounded";
 
-  const titleElement = document.createElement("h5");
-  titleElement.textContent = title;
-  titleElement.className = "text-dark mb-1";
+  const listItem = document.createElement("li");
+  listItem.className = "col-12 col-md-6 col-lg-4 mb-4";
+
+  const card = document.createElement("div");
+  card.className = "card h-100 shadow-sm border-0 rounded-lg hover-shadow";
+
+  const cardHeader = document.createElement("div");
+  cardHeader.className = "card-header bg-primary text-white rounded-top";
+  cardHeader.textContent = title;
+
+  const cardBody = document.createElement("div");
+  cardBody.className = "card-body d-flex flex-column";
 
   const linkElement = document.createElement("a");
   linkElement.href = url;
   linkElement.target = "_blank";
-
   const displayText = url.replace(/^https?:\/\/(www\.)?/, "");
-  linkElement.textContent = displayText;
-  linkElement.className = "text-primary text-truncate";
 
-  const timestampElement = document.createElement("span");
-  timestampElement.textContent = new Date().toLocaleString();
-  timestampElement.className = "text-muted small";
+  linkElement.innerHTML = `<i class="fas fa-link mr-2"></i>${displayText}`;
+  linkElement.className =
+    "card-link text-primary font-weight-bold text-truncate";
+
+  const timestampElement = document.createElement("small");
+  timestampElement.textContent = `Added on: ${new Date().toLocaleString()}`;
+  timestampElement.className = "text-muted mt-auto";
 
   const removeButton = document.createElement("button");
   removeButton.textContent = "Remove";
-  removeButton.className = "btn btn-danger btn-sm mt-2";
+  removeButton.className = "btn btn-danger btn-sm mt-2 ml-auto";
   removeButton.addEventListener("click", () => {
-    // DELETE the link from the server (assume deleteLink API exists)
     fetch(`/api/links/${link.id}`, {
       method: "DELETE",
     })
@@ -95,9 +101,12 @@ function addLinkToList(link) {
       .catch((error) => console.error("Error:", error));
   });
 
-  listItem.appendChild(titleElement);
-  listItem.appendChild(linkElement);
-  listItem.appendChild(timestampElement);
-  listItem.appendChild(removeButton);
+  cardBody.appendChild(linkElement);
+  cardBody.appendChild(timestampElement);
+  cardBody.appendChild(removeButton);
+  card.appendChild(cardHeader);
+  card.appendChild(cardBody);
+  listItem.appendChild(card);
+
   linkList.appendChild(listItem);
 }

@@ -16,10 +16,12 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true })); // To parse URL-encoded data
+function getUsername(req) {
+  if (req.session?.user?.id) return req.session.user.id;
+  return "ANON";
+}
 
 function isAuthenticated(req, res, next) {
-  console.log(req.session);
-  console.log(req.session.user);
   if (req.session.user) return next();
   res.status(401).json({ error: "Unauthorized, please log in first" });
 }
@@ -75,7 +77,7 @@ app.post("/api/links", async (req, res) => {
     url,
     title,
     timestamp: new Date().toISOString(),
-    user_id: req.session.user ? req.session.user.id : "ANON",
+    user_id: getUsername(req),
   };
   const { data, error } = await supabase.from("links").insert([link]);
 
