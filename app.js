@@ -5,23 +5,17 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+const db = require("@supabase/supabase-js");
 const PORT = 3000;
 const app = express();
+const KEY = process.env.SUPABASE_KEY;
+const URL = process.env.SUPABASE_URL;
+const supabase = db.createClient(URL, KEY);
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
-
 app.use(express.urlencoded({ extended: true })); // To parse URL-encoded data
-
-app.use(
-  session({
-    secret: "Secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false }, // Set to true if using HTTPS
-  }),
-);
 
 function isAuthenticated(req, res, next) {
   console.log(req.session);
@@ -33,7 +27,6 @@ app.use(express.static(path.join(__dirname, "public")));
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 
-let links = [];
 let users = [];
 
 // Middleware to check if a user is authenticated
@@ -71,29 +64,48 @@ app.post("/api/logout", (req, res) => {
   res.json({ message: "Logout successful" });
 });
 
-app.post("/api/links", (req, res) => {
+app.post("/api/links", async (req, res) => {
   const { url, title } = req.body;
+
   if (!url) {
     return res.status(400).json({ error: "URL is required" });
   }
-
-  const newLink = {
+  const link = {
     id: uuidv4(),
     url,
     title,
     timestamp: new Date().toISOString(),
-    userId: req.session.user ? req.session.user.id : "ANON", // Associate the link with the user
+    user_id: req.session.user ? req.session.user.id : "ANON",
   };
+  const { data, error } = await supabase.from("links").insert([link]);
 
-  links.push(newLink);
-  res.status(201).json({ message: "Link added successfully", link: newLink });
+  if (error) {
+    res.status(400).json({ message: error.message });
+  } else {
+    res.status(201).json({ message: "Link added successfully", link: link });
+  }
 });
-app.delete("/api/links/:id", (req, res) => {
-  links = links.filter((link) => link.id !== req.params.id);
-  res.json(links);
+
+app.get("/api/links", async (req, res) => {
+  const { data, error } = await supabase.from("links").select("*");
+
+  if (error) {
+    res.status(400).json({ message: error.message });
+  } else {
+    res.json(data);
+  }
 });
-app.get("/api/links", (req, res) => {
-  res.json(links);
+
+app.delete("/api/links/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const { data, error } = await supabase.from("links").delete().eq("id", id);
+
+  if (error) {
+    res.status(400).json({ message: error.message });
+  } else {
+    res.json({ message: "Link deleted successfully", data });
+  }
 });
 
 app.listen(PORT, () => {
