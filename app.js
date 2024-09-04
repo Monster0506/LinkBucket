@@ -87,28 +87,10 @@ app.post("/api/links", (req, res) => {
   links.push(newLink);
   res.status(201).json({ message: "Link added successfully", link: newLink });
 });
-// Add a new link (requires authentication)
-// app.post("/api/links", isAuthenticated, (req, res) => {
-//   const { url } = req.body;
-//   if (!url) {
-//     return res.status(400).json({ error: "URL is required" });
-//   }
-//
-//   const newLink = {
-//     id: uuidv4(),
-//     url,
-//     timestamp: new Date().toISOString(),
-//     userId: req.session.user.id, // Associate the link with the user
-//   };
-//
-//   links.push(newLink);
-//   res.status(201).json({ message: "Link added successfully", link: newLink });
-// });
-// app.get("/api/links", isAuthenticated, (req, res) => {
-//   console.log(links);
-//   const userLinks = links.filter((link) => link.userId === req.session.user.id);
-//   res.json(userLinks);
-// });
+app.delete("/api/links/:id", (req, res) => {
+  links = links.filter((link) => link.id !== req.params.id);
+  res.json(links);
+});
 app.get("/api/links", (req, res) => {
   res.json(links);
 });

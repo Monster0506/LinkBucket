@@ -1384,7 +1384,7 @@ accepts.q	.\node_modules\negotiator\lib\encoding.js	/^      q: minQuality,$/;"	p
 add	.\node_modules\nodemon\lib\rules\add.js	/^function add(rules, which, rule) {$/;"	f
 add	.\node_modules\nodemon\lib\rules\index.js	/^var add = require('.\/add');$/;"	v
 addChunk	.\node_modules\readable-stream\lib\_stream_readable.js	/^function addChunk(stream, state, chunk, addToFront) {$/;"	f
-addLinkToList	.\public\javascripts\main.js	/^function addLinkToList(link) {$/;"	f
+addLinkToList	public\javascripts\main.js	/^function addLinkToList(link) {$/;"	f
 addSchema.validate	.\node_modules\aproba\index.js	/^function validate (rawSchemas, args) {$/;"	f
 afterTransform	.\node_modules\readable-stream\lib\_stream_transform.js	/^function afterTransform(er, data) {$/;"	f
 afterWrite	.\node_modules\readable-stream\lib\_stream_writable.js	/^function afterWrite(stream, state, finished, cb) {$/;"	f
@@ -2282,6 +2282,7 @@ isAbortSignal	.\node_modules\node-fetch\lib\index.es.js	/^function isAbortSignal
 isAbortSignal	.\node_modules\node-fetch\lib\index.js	/^function isAbortSignal(signal) {$/;"	f
 isAbsolute	.\node_modules\express\lib\response.js	/^var isAbsolute = require('.\/utils').isAbsolute;$/;"	v
 isAgent	.\node_modules\agent-base\dist\src\index.js	/^function isAgent(v) {$/;"	f
+isAuthenticated	app.js	/^function isAuthenticated(req, res, next) {$/;"	f
 isBuffer	.\node_modules\qs\lib\utils.js	/^var isBuffer = function isBuffer(obj) {$/;"	f
 isC0ControlPercentEncode	.\node_modules\whatwg-url\lib\url-state-machine.js	/^function isC0ControlPercentEncode(c) {$/;"	f
 isDate.tryDecode	.\node_modules\express-session\node_modules\cookie\index.js	/^function tryDecode(str, decode) {$/;"	f

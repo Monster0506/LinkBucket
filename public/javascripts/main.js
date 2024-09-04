@@ -1,33 +1,4 @@
 document
-  .getElementById("loginForm")
-  .addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      document.getElementById("authSection").style.display = "none";
-      document.getElementById("logoutButton").classList.remove("hidden");
-    } else {
-      alert(data.error || "Login failed");
-    }
-  });
-
-document.getElementById("logoutButton").addEventListener("click", async () => {
-  await fetch("/api/logout", { method: "POST" });
-  document.getElementById("authSection").style.display = "block";
-  document.getElementById("logoutButton").classList.add("hidden");
-  document.getElementById("linkList").innerHTML = "";
-});
-
-document
   .getElementById("linkForm")
   .addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -110,7 +81,10 @@ function addLinkToList(link) {
     fetch(`/api/links/${link.id}`, {
       method: "DELETE",
     })
-      .then(() => linkList.removeChild(listItem))
+      .then(async (links) => {
+        console.log(await links.json());
+        linkList.removeChild(listItem);
+      })
       .catch((error) => console.error("Error:", error));
   });
 
