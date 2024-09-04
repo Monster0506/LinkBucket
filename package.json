@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon --env-file=.env app.js",
+    "start": "node app.js --env-file=.env"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

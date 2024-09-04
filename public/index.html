@@ -4,33 +4,59 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LinkBucket</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-      <h1 class="text-2xl font-bold mb-6 text-center">LinkBucket</h1>
-      <form id="linkForm" class="flex mb-6">
-        <input
-          type="text"
-          id="linkInput"
-          placeholder="Paste your link here..."
-          required
-          class="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+  <body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+      <div id="authSection">
+        <h1 class="text-2xl font-bold mb-4">Login</h1>
+        <form id="loginForm" class="mb-4">
+          <input
+            id="username"
+            type="text"
+            placeholder="Username"
+            class="border p-2 mb-2 w-full"
+          />
+          <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            class="border p-2 mb-2 w-full"
+          />
+          <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Login
+          </button>
+        </form>
         <button
-          type="submit"
-          class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 focus:outline-none"
+          id="logoutButton"
+          class="bg-red-500 text-white px-4 py-2 rounded hidden"
         >
+          Logout
+        </button>
+      </div>
+
+      <h1 class="text-2xl font-bold mb-4">Link Bucket</h1>
+      <form id="linkForm" class="mb-4">
+        <input
+          id="linkInput"
+          type="text"
+          placeholder="Enter a link"
+          class="border p-2 mb-2 w-full"
+          required
+        />
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
           Add Link
         </button>
       </form>
-      <div id="linkBucket">
-        <h2 class="text-xl font-semibold mb-4">Your Links</h2>
-        <ul id="linkList" class="space-y-4">
-          <!-- Links will be added here -->
-        </ul>
-      </div>
+      <ul id="linkList" class="space-y-2"></ul>
     </div>
+
     <script src="/javascripts/main.js"></script>
   </body>
 </html>
