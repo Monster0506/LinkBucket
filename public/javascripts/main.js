@@ -5,6 +5,10 @@ document
 
     const linkInput = document.getElementById("linkInput");
     let linkValue = linkInput.value.trim();
+    const titleInput = document.getElementById("linkTitle");
+    const titleValue = titleInput.value.trim()
+      ? titleInput.value.trim()
+      : linkValue;
 
     // Normalize and validate the link (as before)
     if (!linkValue.startsWith("http://") && !linkValue.startsWith("https://")) {
@@ -25,16 +29,15 @@ document
       const before = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: linkValue }),
+        body: JSON.stringify({ url: linkValue, title: titleValue }),
       };
-      console.log(before.body);
       const response = await fetch("/api/links", before);
-      console.log(response);
       const data = await response.json();
       console.log(data);
       if (data.link) {
         addLinkToList(data.link);
         linkInput.value = ""; // Clear input field after adding
+        titleInput.value = "";
       }
     } else {
       alert("Please enter a valid URL.");
@@ -54,30 +57,34 @@ window.addEventListener("DOMContentLoaded", () => {
     .catch((error) => console.error("Error:", error));
 });
 function addLinkToList(link) {
-  const linkList = document.getElementById("linkList");
-
+  const url = link.url;
+  const id = link.id;
+  const title = link.title;
   const listItem = document.createElement("li");
   listItem.className =
-    "flex justify-between items-center p-4 bg-gray-50 border border-gray-200 rounded-lg";
+    "col d-flex flex-column justify-content-between p-3 bg-light border rounded";
+
+  const titleElement = document.createElement("h5");
+  titleElement.textContent = title;
+  titleElement.className = "text-dark mb-1";
 
   const linkElement = document.createElement("a");
-  linkElement.href = link.url;
+  linkElement.href = url;
   linkElement.target = "_blank";
 
-  const displayText = link.url.replace(/^https?:\/\/(www\.)?/, "");
+  const displayText = url.replace(/^https?:\/\/(www\.)?/, "");
   linkElement.textContent = displayText;
-  linkElement.className = "text-blue-500 hover:underline truncate max-w-full";
+  linkElement.className = "text-primary text-truncate";
 
   const timestampElement = document.createElement("span");
-  timestampElement.textContent = new Date(link.timestamp).toLocaleString();
-  timestampElement.className = "text-gray-500 text-sm";
+  timestampElement.textContent = new Date().toLocaleString();
+  timestampElement.className = "text-muted small";
 
   const removeButton = document.createElement("button");
   removeButton.textContent = "Remove";
-  removeButton.className =
-    "bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 focus:outline-none";
+  removeButton.className = "btn btn-danger btn-sm mt-2";
   removeButton.addEventListener("click", () => {
-    // DELETE the link from the server
+    // DELETE the link from the server (assume deleteLink API exists)
     fetch(`/api/links/${link.id}`, {
       method: "DELETE",
     })
@@ -88,6 +95,7 @@ function addLinkToList(link) {
       .catch((error) => console.error("Error:", error));
   });
 
+  listItem.appendChild(titleElement);
   listItem.appendChild(linkElement);
   listItem.appendChild(timestampElement);
   listItem.appendChild(removeButton);

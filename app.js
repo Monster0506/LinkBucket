@@ -72,7 +72,7 @@ app.post("/api/logout", (req, res) => {
 });
 
 app.post("/api/links", (req, res) => {
-  const { url } = req.body;
+  const { url, title } = req.body;
   if (!url) {
     return res.status(400).json({ error: "URL is required" });
   }
@@ -80,6 +80,7 @@ app.post("/api/links", (req, res) => {
   const newLink = {
     id: uuidv4(),
     url,
+    title,
     timestamp: new Date().toISOString(),
     userId: req.session.user ? req.session.user.id : "ANON", // Associate the link with the user
   };
